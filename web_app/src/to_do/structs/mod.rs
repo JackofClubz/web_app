@@ -1,4 +1,6 @@
 mod base;
+pub mod done;
+pub mod pending;
 
 /*
 This enables the files within the module to access
