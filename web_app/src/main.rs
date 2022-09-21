@@ -19,12 +19,15 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let status: &String = &args[1];
     let title: &String = &args[2];
-    let mut state:Map<String, Value> = read_file(String::from("./state.json"));
+    let mut state: Map<String, Value> = read_file(String::from("./state.json"));
     println!("{:?}", state);
-    state.insert(title_to_strin(), json!(status));
+    state.insert(title.to_string(), json!(status));
     write_to_file("./state.json", &mut state);
 }
 
 /*
 The to_do_item variable of type Result takes in the enum ItemTypes as OK values and a referenced string as Err value. 
+Here, we collect the environment arguments passed by the user and collect it to
+a vector of strings. We then define the commands from the args vector. 
+Once we've done that, we load the data from the JSON file and print it using the debug notation. 
 */
