@@ -8,10 +8,19 @@ pub struct Pending{
     pub super_struct: Base
 }
 
-impl Pending{
-    pub fn new(input_title: &str) -> Pending{
-        let base: Base = Base::new(input_title, "pending");
-        return Pending{super_struct:base}
+impl Pending {
+
+    /// The constructor for the Done struct.
+    ///
+    /// # Arguments
+    /// * input_title (String): the title of the to do item
+    ///
+    /// # Returns
+    /// (Pending): the constructed Pending struct
+    pub fn new(input_title: String) -> Pending {
+        let input_status: String = String::from("pending");
+        let base: Base = Base::new(input_title, input_status);
+        return Pending{super_struct: base}
     }
 }
 
@@ -20,4 +29,4 @@ impl Edit for Pending{}
 impl Get for Pending{}
 impl Delete for Pending{}
 
-//the structs are enhanced with our traits
+//the structs are enhanced with our traits. if we make another to-do item struct we can slot in a range of traits to instantly give it the functionaly we need 

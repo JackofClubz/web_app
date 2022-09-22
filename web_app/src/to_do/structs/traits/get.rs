@@ -10,7 +10,7 @@ pub trait Get {
                 println!("\n\nItem: {}", title);
                 println!("Status: {} \n\n", result);
             },
-            None => print!("item: {} was not found", title)
+            None => println!("item: {} was not found", title)
         }
 
     }
