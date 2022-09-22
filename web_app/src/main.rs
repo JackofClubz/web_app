@@ -1,33 +1,30 @@
-mod to_do;
 mod state;
+mod to_do;
+mod processes;
 use std::env;
-use std::fs::read;
-use state::{write_to_file, read_file};
+use state::read_file;
 use serde_json::value::Value;
-use serde_json::{Map, json};
-use to_do::ItemTypes;
+use serde_json::Map;
 use to_do::to_do_factory;
-use to_do::structs::traits::create::Create;
-
+use processes::process_input;
 fn main() {
-    let to_do_item: Result<ItemTypes, &'static str> = to_do_factory("pending", "washing");
-    match to_do_item.unwrap(){
-        ItemTypes::Pending(item) => item.create(&item.super_struct.title),
-        ItemTypes::Done(item) => println!("it's a done item with the title: {}", item.super_struct.title)
-    }
-
     let args: Vec<String> = env::args().collect();
-    let status: &String = &args[1];
+    let command: &String = &args[1];
     let title: &String = &args[2];
-    let mut state: Map<String, Value> = read_file(String::from("./state.json"));
-    println!("{:?}", state);
-    state.insert(title.to_string(), json!(status));
-    write_to_file("./state.json", &mut state);
-}
+    let state: Map<String, Value> =
+        read_file("./state.json");
+    let status: String;
 
-/*
-The to_do_item variable of type Result takes in the enum ItemTypes as OK values and a referenced string as Err value. 
-Here, we collect the environment arguments passed by the user and collect it to
-a vector of strings. We then define the commands from the args vector. 
-Once we've done that, we load the data from the JSON file and print it using the debug notation. 
-*/
+    match &state.get(*&title) {
+        Some(result) => {
+            status = result.to_string().replace('\"', "");
+        }
+        None=> {
+            status = "pending";
+        }
+    }
+    let item = to_do_factory(&status,
+                             title).expect(&status);
+    process_input(item, command.to_string(), &state);
+
+}
