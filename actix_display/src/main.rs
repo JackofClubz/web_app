@@ -14,8 +14,15 @@ async fn main() -> std::io::Result<()>{
         .route("/{name}", web::get().to(greet))
 
     })
+    // the app has to be returned from the closure for the .bind and .run functions to be enacted
     .bind("127.0.0.1:800")?
     .run()
     .await
 }
 
+/*
+used the actix framework to define a view that extracts data from
+the request. We then redefine our main function as an async with the
+macro from acrix-rt - without it hte program would crash since main fns 
+are not allowed to be async. 
+*/
