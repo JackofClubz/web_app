@@ -9,9 +9,11 @@ async fn greet(req: HttpRequest) -> impl Responder{
 #[actix_rt:main]
 async fn main() -> std::io::Result<()>{
     HttpServer::new(||{
-        App::new()
+        println!("function is firing");
+        let app = App::new()
         .route("/", web::get().to(greet))
-        .route("/{name}", web::get().to(greet))
+        .route("/{name}", web::get().to(greet));
+        return app
 
     })
     // the app has to be returned from the closure for the .bind and .run functions to be enacted
