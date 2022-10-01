@@ -30,8 +30,8 @@
 // are not allowed to be async. 
 // */
 
+use futures::executor::block_on;
 use std::{thread, time};
-use std::thread::JoinHandle;
 
 fn do_something(number: i8) -> i8{
     println!("number {} is runing", number);
@@ -40,14 +40,11 @@ fn do_something(number: i8) -> i8{
     return 2
 }
 
-fn main(){
-    let now = time::Instant::now();
-    let thread_one: JoinHandle<i8> = thread::spawn(|| do_something(1));
-    let thread_two: JoinHandle<i8> = thread::spawn(|| do_something(2));
-    let thread_three: JoinHandle<i8> = thread::spawn(|| do_something(3));
-    let result_one = thread_one.join();
-    let result_two = thread_two.join();
-    let result_three = thread_three.join();
-    println!("time elapsed {:?}", now.elapsed());
-    println!("result {}", result_one.unwrap() + result_two.unwrap() + result_three.unwrap());
+fn main() {
+let now = time::Instant::now();
+let future_one = do_something(1);
+let outcome = block_on(future_one);
+
+println!("time elapsed {:?}", now.elapsed());
+println!("Here is the outcome: {}", outcome);
 }
